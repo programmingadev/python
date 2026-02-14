@@ -22,7 +22,7 @@ def add_product():
         product = Product(name=data['name'],price=data['price'],description=data.get("description", ""))
         db.session.add(product)
         db.session.commit()
-        return jsonify({"message": "Product added successfuly"}), 201
+        return jsonify({"message": "Product added successfuly"}), 200
     
     return jsonify({"message": "Invalid Data"}), 400
 
@@ -41,6 +41,25 @@ def get_product_details(product_id):
         }), 200
     
     return jsonify({"message":"No product match this description"}), 404
+
+
+@app.route('/api/products', methods=["GET"])
+def get_products():
+    products = Product.query.all()
+    
+    product_list = []
+
+    for product in products:
+        product_data = {
+            "id": product.id,
+            "name": product.name,
+            "price": product.price,
+            "description": product.description
+        }
+        
+        product_list.append(product_data)
+
+    return product_list, 200
 
 
 @app.route('/api/products/update/<int:product_id>', methods=["PUT"])
