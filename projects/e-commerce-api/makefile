@@ -1,5 +1,11 @@
 .PHONY: reset-db format create-admin
 
+run:
+	tput reset && python3 app.py
+
+shell-db:
+	python3 -m flask shell
+
 reset-db:
 	rm -f instance/ecommerce.db
 	python3 -c "from app import app, db; app.app_context().push(); db.create_all()"
